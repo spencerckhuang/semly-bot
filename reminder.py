@@ -4,6 +4,7 @@ import pytz
 
 
 class Reminder(commands.Cog):
+    DEV_CHANNEL = 938956251080044608
     TEST_CHANNEL = 939658799059451904
     ACTIVE_DEVS = "<@&938959783510294619>"
 
@@ -13,7 +14,7 @@ class Reminder(commands.Cog):
 
     @tasks.loop(seconds=30)
     async def reminder(self):
-        channel = self.bot.get_channel(self.TEST_CHANNEL)
+        channel = self.bot.get_channel(self.DEV_CHANNEL)
         now = datetime.now(pytz.timezone("America/New_York"))
         if is_30_minutes_before_check_in(now):
             await channel.send(f"{self.ACTIVE_DEVS} Week.ly Check-in in 30 minutes!")
