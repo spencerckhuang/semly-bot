@@ -12,7 +12,7 @@ from reminder import (
 class Bot(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.notify_monday_thursday.start()
+        self.reminder.start()
 
     @tasks.loop(seconds=30)
     async def reminder(self):
