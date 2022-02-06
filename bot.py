@@ -26,6 +26,7 @@ class Bot(commands.Bot):
             await channel.send("@everyone Week.ly Hack Session in 30 minutes!")
         elif is_hack_session_time(now):
             await channel.send("@everyone Week.ly Hack Session now!")
+        print(f"Looped: {now}")
 
     @reminder.before_loop
     async def before_reminder(self):
