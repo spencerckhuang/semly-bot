@@ -1,7 +1,6 @@
-
 from bot import Bot
+from decouple import config
 
 
 bot = Bot(command_prefix="$")
-with open("token.txt", mode="r") as f:
-    bot.run(f.read())
+bot.run(config("TOKEN"))

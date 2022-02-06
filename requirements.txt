@@ -1,5 +1,6 @@
 pip
 black
+python-decouple
 nextcord
 pycodestyle
 pytest
