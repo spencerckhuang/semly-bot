@@ -1,0 +1,6 @@
+pip
+black
+nextcord
+pycodestyle
+pytest
+pytz
