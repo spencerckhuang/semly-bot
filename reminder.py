@@ -4,34 +4,57 @@ import pytz
 
 
 class Reminder(commands.Cog):
-    DEV_CHANNEL = 938956251080044608
-    TEST_CHANNEL = 939658799059451904
     ACTIVE_DEVS = "<@&938959783510294619>"
 
-    def __init__(self, bot):
-        self.bot = bot
+    @property
+    def DEV_CHANNEL(self):
+        return self.bot.get_channel(938956251080044608)
+
+    @property
+    def CHECK_IN_CHANNEL(self):
+        return self.bot.get_channel(938960725316100166)
+
+    @property
+    def TEST_CHANNEL(self):
+        return self.bot.get_channel(939658799059451904)
+
+    def __init__(self, bot: commands.Bot):
+        self.bot: commands.Bot = bot
         self.reminder.start()
 
     @tasks.loop(seconds=30)
     async def reminder(self):
-        channel = self.bot.get_channel(self.DEV_CHANNEL)
         now = datetime.now(pytz.timezone("America/New_York"))
         if is_30_minutes_before_check_in(now):
-            await channel.send(f"{self.ACTIVE_DEVS} Week.ly Check-in in 30 minutes!")
+            self.send_before_check_in_message()
         elif is_check_in_time(now):
-            await channel.send(f"{self.ACTIVE_DEVS} Week.ly Check-in now!")
+            self.send_check_in_message()
         elif is_30_minutes_before_hack_session(now):
-            message = await channel.send(
-                f"{self.ACTIVE_DEVS}> Week.ly Hack Session in 30 minutes! "
-                "Please react with ✅ if you can make it, "
-                "⌛ if you will be late, and ❌ if you can't make it."
-            )
-            await message.add_reaction("✅️")
-            await message.add_reaction("⌛")
-            await message.add_reaction("❌")
+            self.send_before_hack_session_message()
         elif is_hack_session_time(now):
-            await channel.send("@everyone Week.ly Hack Session now!")
+            self.send_hack_session_message()
         print(f"Looped: {now}")
+
+    async def send_before_check_in_message(self):
+        await self.CHECK_IN_CHANNEL.send(
+            f"{self.ACTIVE_DEVS} Week.ly Check-in in 30 minutes!"
+        )
+
+    async def send_check_in_message(self):
+        await self.CHECK_IN_CHANNEL.send(f"{self.ACTIVE_DEVS} Week.ly Check-in now!")
+
+    async def send_before_hack_session_message(self):
+        message = await self.DEV_CHANNEL.send(
+            f"{self.ACTIVE_DEVS}> Week.ly Hack Session in 30 minutes! "
+            "Please react with ✅ if you can make it, "
+            "⌛ if you will be late, and ❌ if you can't make it."
+        )
+        await message.add_reaction("✅️")
+        await message.add_reaction("⌛")
+        await message.add_reaction("❌")
+
+    async def send_hack_session_message(self):
+        await self.DEV_CHANNEL.send(f"{self.ACTIVE_DEVS} Week.ly Hack Session now!")
 
     @reminder.before_loop
     async def before_reminder(self):
