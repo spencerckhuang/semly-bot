@@ -26,13 +26,13 @@ class Reminder(commands.Cog):
     async def reminder(self):
         now = datetime.now(pytz.timezone("America/New_York"))
         if is_30_minutes_before_check_in(now):
-            self.send_before_check_in_message()
+            await self.send_before_check_in_message()
         elif is_check_in_time(now):
-            self.send_check_in_message()
+            await self.send_check_in_message()
         elif is_30_minutes_before_hack_session(now):
-            self.send_before_hack_session_message()
+            await self.send_before_hack_session_message()
         elif is_hack_session_time(now):
-            self.send_hack_session_message()
+            await self.send_hack_session_message()
         print(f"Looped: {now}")
 
     async def send_before_check_in_message(self):
