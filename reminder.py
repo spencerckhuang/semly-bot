@@ -25,11 +25,11 @@ class Reminder(commands.Cog):
     @tasks.loop(seconds=30)
     async def reminder(self):
         now = datetime.now(pytz.timezone("America/New_York"))
-        if is_30_minutes_before_check_in(now):
+        if is_half_hour_before_check_in(now):
             await self.send_before_check_in_message()
         elif is_check_in_time(now):
             await self.send_check_in_message()
-        elif is_30_minutes_before_hack_session(now):
+        elif is_hour_before_hack_session(now):
             await self.send_before_hack_session_message()
         elif is_hack_session_time(now):
             await self.send_hack_session_message()
@@ -61,17 +61,17 @@ class Reminder(commands.Cog):
         await self.bot.wait_until_ready()
 
 
-def is_30_minutes_before_check_in(time: datetime) -> bool:
-    return time.weekday() == 2 and time.hour == 10 and time.minute == 30
+def is_half_hour_before_check_in(time: datetime) -> bool:
+    return time.weekday() == 0 and time.hour == 10 and time.minute == 30
 
 
 def is_check_in_time(time: datetime) -> bool:
-    return time.weekday() == 2 and time.hour == 11 and time.minute == 0
+    return time.weekday() == 0 and time.hour == 11 and time.minute == 0
 
 
-def is_30_minutes_before_hack_session(time: datetime) -> bool:
-    return time.weekday() == 5 and time.hour == 10 and time.minute == 30
+def is_hour_before_hack_session(time: datetime) -> bool:
+    return time.weekday() == 3 and time.hour == 15 and time.minute == 0
 
 
 def is_hack_session_time(time: datetime) -> bool:
-    return time.weekday() == 5 and time.hour == 11 and time.minute == 0
+    return time.weekday() == 3 and time.hour == 16 and time.minute == 0
