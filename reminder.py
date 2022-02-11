@@ -41,20 +41,31 @@ class Reminder(commands.Cog):
         )
 
     async def send_check_in_message(self):
-        await self.CHECK_IN_CHANNEL.send(f"{self.ACTIVE_DEVS} Week.ly Check-in now!")
+        await self.CHECK_IN_CHANNEL.send(
+            f"{self.ACTIVE_DEVS} Week.ly Check-in now! \n"
+            "Please complete the following template:\n"
+            "```\n"
+            "**What I've done so far:** \n"
+            "**What I'll do next:** \n"
+            "**What's blocking me:** \n"
+            "```"
+        )
 
     async def send_before_hack_session_message(self):
         message = await self.DEV_CHANNEL.send(
-            f"{self.ACTIVE_DEVS}> Week.ly Hack Session in 30 minutes! "
+            f"{self.ACTIVE_DEVS} Week.ly Hack Session in 1 hour! "
             "Please react with ✅ if you can make it, "
             "⌛ if you will be late, and ❌ if you can't make it."
         )
-        await message.add_reaction("✅️")
-        await message.add_reaction("⌛")
+        await message.add_reaction("✅")
+        await message.add_reaction("⏳")
         await message.add_reaction("❌")
 
     async def send_hack_session_message(self):
-        await self.DEV_CHANNEL.send(f"{self.ACTIVE_DEVS} Week.ly Hack Session now!")
+        await self.DEV_CHANNEL.send(
+            f"{self.ACTIVE_DEVS} Week.ly Hack Session now!\n"
+            "https://jhubluejays.zoom.us/j/91534929681?pwd=TDZMZTd4RHdqZ3lmODc0dWNNK1FHUT09"
+        )
 
     @reminder.before_loop
     async def before_reminder(self):
