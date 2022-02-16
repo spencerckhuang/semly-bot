@@ -22,7 +22,7 @@ class Reminder(commands.Cog):
         self.bot: commands.Bot = bot
         self.reminder.start()
 
-    @tasks.loop(seconds=30)
+    @tasks.loop(seconds=60)
     async def reminder(self):
         now = datetime.now(pytz.timezone("America/New_York"))
         if is_half_hour_before_check_in(now):
