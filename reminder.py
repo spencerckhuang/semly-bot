@@ -20,7 +20,7 @@ class Reminder(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot = bot
-        self.reminder.start()
+        # self.reminder.start()
 
     @tasks.loop(seconds=60)
     async def reminder(self):
