@@ -20,9 +20,9 @@ class Reminder(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot = bot
-        # self.reminder.start()
+        self.reminder.start()
 
-    @tasks.loop(seconds=60)
+    @tasks.loop(seconds=59)
     async def reminder(self):
         now = datetime.now(pytz.timezone("America/New_York"))
         if is_half_hour_before_check_in(now):
@@ -73,16 +73,16 @@ class Reminder(commands.Cog):
 
 
 def is_half_hour_before_check_in(time: datetime) -> bool:
-    return time.weekday() == 0 and time.hour == 10 and time.minute == 30
+    return time.weekday() == 2 and time.hour == 10 and time.minute == 30
 
 
 def is_check_in_time(time: datetime) -> bool:
-    return time.weekday() == 0 and time.hour == 11 and time.minute == 0
+    return time.weekday() == 2 and time.hour == 11 and time.minute == 0
 
 
 def is_hour_before_hack_session(time: datetime) -> bool:
-    return time.weekday() == 3 and time.hour == 15 and time.minute == 0
+    return time.weekday() == 5 and time.hour == 13 and time.minute == 0
 
 
 def is_hack_session_time(time: datetime) -> bool:
-    return time.weekday() == 3 and time.hour == 16 and time.minute == 0
+    return time.weekday() == 5 and time.hour == 14 and time.minute == 0
