@@ -52,14 +52,20 @@ class Reminder(commands.Cog):
         )
 
     async def send_before_hack_session_message(self):
-        message = await self.DEV_CHANNEL.send(
+        attendance_message = await self.DEV_CHANNEL.send(
             f"{self.ACTIVE_DEVS} Week.ly Hack Session in 1 hour! "
             "Please react with ✅ if you can make it, "
             "⌛ if you will be late, and ❌ if you can't make it."
         )
-        await message.add_reaction("✅")
-        await message.add_reaction("⏳")
-        await message.add_reaction("❌")
+        await attendance_message.add_reaction("✅")
+        await attendance_message.add_reaction("⏳")
+        await attendance_message.add_reaction("❌")
+        modality_message = await self.DEV_CHANNEL.send(
+            "Additionally, please react with 🧑 if you will be attending in-person "
+            "and 💻 if you will be attending remotely."
+        )
+        await modality_message.add_reaction("🧑")
+        await modality_message.add_reaction("💻")
 
     async def send_hack_session_message(self):
         await self.DEV_CHANNEL.send(
