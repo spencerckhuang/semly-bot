@@ -6,6 +6,15 @@ import pytz
 class Reminder(commands.Cog):
     ACTIVE_DEVS = "<@&938959783510294619>"
 
+    CHECK_IN_TEMPLATE = (
+        "Please complete the following template:\n"
+        "```\n"
+        "**What I've done so far:** \n"
+        "**What I'll do next:** \n"
+        "**What's blocking me:** \n"
+        "```"
+    )
+
     @property
     def DEV_CHANNEL(self):
         return self.bot.get_channel(938956251080044608)
@@ -33,7 +42,6 @@ class Reminder(commands.Cog):
             await self.send_before_hack_session_message()
         elif is_hack_session_time(now):
             await self.send_hack_session_message()
-        print(f"Looped: {now}")
 
     async def send_before_check_in_message(self):
         await self.CHECK_IN_CHANNEL.send(
@@ -42,13 +50,7 @@ class Reminder(commands.Cog):
 
     async def send_check_in_message(self):
         await self.CHECK_IN_CHANNEL.send(
-            f"{self.ACTIVE_DEVS} Week.ly Check-in now! \n"
-            "Please complete the following template:\n"
-            "```\n"
-            "**What I've done so far:** \n"
-            "**What I'll do next:** \n"
-            "**What's blocking me:** \n"
-            "```"
+            f"{self.ACTIVE_DEVS} Week.ly Check-in now!\n{self.CHECK_IN_TEMPLATE}"
         )
 
     async def send_before_hack_session_message(self):
@@ -69,8 +71,7 @@ class Reminder(commands.Cog):
 
     async def send_hack_session_message(self):
         await self.DEV_CHANNEL.send(
-            f"{self.ACTIVE_DEVS} Week.ly Hack Session now!\n"
-            "https://jhubluejays.zoom.us/j/91534929681?pwd=TDZMZTd4RHdqZ3lmODc0dWNNK1FHUT09"
+            f"{self.ACTIVE_DEVS} Week.ly Hack Session now!\n{self.CHECK_IN_TEMPLATE}"
         )
 
     @reminder.before_loop
