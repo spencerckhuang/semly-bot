@@ -24,6 +24,10 @@ class Reminder(commands.Cog):
         return self.bot.get_channel(938960725316100166)
 
     @property
+    def HACK_SESSION_CHANNEL(self):
+        return self.bot.get_channel(942783396042645575)
+
+    @property
     def TEST_CHANNEL(self):
         return self.bot.get_channel(939658799059451904)
 
@@ -70,9 +74,11 @@ class Reminder(commands.Cog):
         await modality_message.add_reaction("💻")
 
     async def send_hack_session_message(self):
-        await self.DEV_CHANNEL.send(
-            f"{self.ACTIVE_DEVS} Week.ly Hack Session now!\n{self.CHECK_IN_TEMPLATE}"
+        await self.HACK_SESSION_CHANNEL.send(
+            f"{self.ACTIVE_DEVS} Week.ly Hack Session now!\n"
+            f"Please check-in at {self.CHECK_IN_CHANNEL.mention}."
         )
+        await self.CHECK_IN_CHANNEL.send(self.CHECK_IN_TEMPLATE)
 
     @reminder.before_loop
     async def before_reminder(self):
