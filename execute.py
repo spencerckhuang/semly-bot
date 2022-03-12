@@ -12,7 +12,7 @@ class ExecuteCog(Cog):
     async def execute(self, ctx: Context, *, message: str):
         if ctx.message.author.id == self.SUPERUSER:
             try:
-                result = eval(message)
+                result = eval(message.replace("```", ""))
                 await ctx.send(result)
             except Exception as e:
                 await ctx.send(str(e))
