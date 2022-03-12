@@ -3,7 +3,7 @@ from datetime import datetime
 import pytz
 
 
-class Reminder(commands.Cog):
+class ReminderCog(commands.Cog):
     ACTIVE_DEVS = "<@&938959783510294619>"
 
     CHECK_IN_TEMPLATE = (
