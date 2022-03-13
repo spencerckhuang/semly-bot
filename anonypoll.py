@@ -44,12 +44,13 @@ class AnonyPollCog(Cog):
 
     @command()
     async def poll(self, ctx: Context, *, poll: str):
-        report = await ctx.send(f"Results for {poll}:")
+        results = await ctx.send(f"Results for {poll}:")
+        report = Report(results)
         for dev in self.get_active_devs():
             if dev.id != self.RECEIVER:
                 message = await dev.send(poll)
                 self.polls[ctx.message].append(message)
-                self.responses[message] = Report(report)
+                self.responses[message] = report
 
     def get_active_devs(self):
         return filter(
