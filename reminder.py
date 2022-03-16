@@ -4,6 +4,7 @@ import pytz
 
 
 class ReminderCog(commands.Cog):
+    ACTIVE = False
     ACTIVE_DEVS = "<@&938959783510294619>"
 
     CHECK_IN_TEMPLATE = (
@@ -33,7 +34,8 @@ class ReminderCog(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot = bot
-        self.reminder.start()
+        if self.ACTIVE:
+            self.reminder.start()
 
     @tasks.loop(seconds=59)
     async def reminder(self):
