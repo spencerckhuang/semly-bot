@@ -4,7 +4,7 @@ import pytz
 
 
 class ReminderCog(commands.Cog):
-    ACTIVE = False
+    ACTIVE = True
     ACTIVE_DEVS = "<@&938959783510294619>"
 
     CHECK_IN_TEMPLATE = (
@@ -15,10 +15,6 @@ class ReminderCog(commands.Cog):
         "**What's blocking me:** \n"
         "```"
     )
-
-    @property
-    def DEV_CHANNEL(self):
-        return self.bot.get_channel(938956251080044608)
 
     @property
     def CHECK_IN_CHANNEL(self):
@@ -60,7 +56,7 @@ class ReminderCog(commands.Cog):
         )
 
     async def send_before_hack_session_message(self):
-        attendance_message = await self.DEV_CHANNEL.send(
+        attendance_message = await self.HACK_SESSION_CHANNEL.send(
             f"{self.ACTIVE_DEVS} Week.ly Hack Session in 1 hour! "
             "Please react with ✅ if you can make it, "
             "⌛ if you will be late, and ❌ if you can't make it."
@@ -68,7 +64,7 @@ class ReminderCog(commands.Cog):
         await attendance_message.add_reaction("✅")
         await attendance_message.add_reaction("⏳")
         await attendance_message.add_reaction("❌")
-        modality_message = await self.DEV_CHANNEL.send(
+        modality_message = await self.HACK_SESSION_CHANNEL.send(
             "Additionally, please react with 🧑 if you will be attending in-person "
             "and 💻 if you will be attending remotely."
         )
