@@ -16,6 +16,15 @@ class ReminderCog(commands.Cog):
         "```"
     )
 
+    HACK_SESSION_TEMPLATE = (
+        "Please complete the following template:\n"
+        "```\n"
+        "**What I got done last week:** \n"
+        "**What I'll try to get done by next week:** \n"
+        "**What I foresee may slow my progress:** \n"
+        "```"
+    )
+
     @property
     def CHECK_IN_CHANNEL(self):
         return self.bot.get_channel(938960725316100166)
@@ -76,7 +85,7 @@ class ReminderCog(commands.Cog):
             f"{self.ACTIVE_DEVS} Week.ly Hack Session now!\n"
             f"Please check-in at {self.CHECK_IN_CHANNEL.mention}."
         )
-        await self.CHECK_IN_CHANNEL.send(self.CHECK_IN_TEMPLATE)
+        await self.CHECK_IN_CHANNEL.send(self.HACK_SESSION_TEMPLATE)
 
     @reminder.before_loop
     async def before_reminder(self):
