@@ -4,7 +4,7 @@ import pytz
 
 
 class ReminderCog(commands.Cog):
-    ACTIVE = True
+    ACTIVE = False
     ACTIVE_DEVS = "<@&938959783510294619>"
 
     CHECK_IN_TEMPLATE = (
