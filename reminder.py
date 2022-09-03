@@ -4,7 +4,7 @@ import pytz
 
 
 class ReminderCog(commands.Cog):
-    ACTIVE = True 
+    ACTIVE = True
     ACTIVE_DEVS = "<@&938959783510294619>"
 
     CHECK_IN_TEMPLATE = (
@@ -30,6 +30,10 @@ class ReminderCog(commands.Cog):
         return self.bot.get_channel(938956251080044608)
 
     @property
+    def CHECK_IN_CHANNEL(self):
+        return self.HACK_SESSION_CHANNEL
+
+    @property
     def HACK_SESSION_CHANNEL(self):
         return self.bot.get_channel(942783396042645575)
 
@@ -45,9 +49,7 @@ class ReminderCog(commands.Cog):
     @tasks.loop(seconds=59)
     async def reminder(self):
         now = datetime.now(pytz.timezone("America/New_York"))
-        if is_half_hour_before_check_in(now):
-            await self.send_before_check_in_message()
-        elif is_check_in_time(now):
+        if is_check_in_time(now):
             await self.send_check_in_message()
         elif is_hour_before_hack_session(now):
             await self.send_before_hack_session_message()
@@ -60,7 +62,7 @@ class ReminderCog(commands.Cog):
         )
 
     async def send_before_hack_session_message(self):
-        attendance_message = await self.DEV_CHANNEL.send(
+        attendance_message = await self.HACK_SESSION_CHANNEL.send(
             f"{self.ACTIVE_DEVS} Week.ly Hack Session in 1 hour! "
             "Please react with ✅ if you can make it, "
             "⌛ if you will be late, and ❌ if you can't make it."
@@ -68,7 +70,7 @@ class ReminderCog(commands.Cog):
         await attendance_message.add_reaction("✅")
         await attendance_message.add_reaction("⏳")
         await attendance_message.add_reaction("❌")
-        modality_message = await self.DEV_CHANNEL.send(
+        modality_message = await self.HACK_SESSION_CHANNEL.send(
             "Additionally, please react with 🧑 if you will be attending in-person "
             "and 💻 if you will be attending remotely."
         )
@@ -80,7 +82,7 @@ class ReminderCog(commands.Cog):
             f"{self.ACTIVE_DEVS} Week.ly Hack Session now!\n"
             f"Please check-in at {self.CHECK_IN_CHANNEL.mention}."
         )
-        await self.CHECK_IN_CHANNEL.send(self.CHECK_IN_TEMPLATE)
+        await self.CHECK_IN_CHANNEL.send(self.HACK_SESSION_TEMPLATE)
 
     @reminder.before_loop
     async def before_reminder(self):
