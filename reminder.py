@@ -4,25 +4,30 @@ import pytz
 
 
 class ReminderCog(commands.Cog):
-    ACTIVE = False
+    ACTIVE = True 
     ACTIVE_DEVS = "<@&938959783510294619>"
 
     CHECK_IN_TEMPLATE = (
-        "Please complete the following template:\n"
+        "Please check-in with the following template:\n"
         "```\n"
         "**What I've done so far:** \n"
-        "**What I'll do next:** \n"
+        "**What I still have to finish:** \n"
         "**What's blocking me:** \n"
+        "```"
+    )
+
+    CHECK_OUT_TEMPLATE = (
+        "Please check-out with the following template:\n"
+        "```\n"
+        "**What I'll do by the next meeting:** \n"
+        "**What I foresee may slow my progress:** \n"
+        "**Any feedback on last week's progress or today's meeting**: \n"
         "```"
     )
 
     @property
     def DEV_CHANNEL(self):
         return self.bot.get_channel(938956251080044608)
-
-    @property
-    def CHECK_IN_CHANNEL(self):
-        return self.bot.get_channel(938960725316100166)
 
     @property
     def HACK_SESSION_CHANNEL(self):
@@ -48,11 +53,6 @@ class ReminderCog(commands.Cog):
             await self.send_before_hack_session_message()
         elif is_hack_session_time(now):
             await self.send_hack_session_message()
-
-    async def send_before_check_in_message(self):
-        await self.CHECK_IN_CHANNEL.send(
-            f"{self.ACTIVE_DEVS} Week.ly Check-in in 30 minutes!"
-        )
 
     async def send_check_in_message(self):
         await self.CHECK_IN_CHANNEL.send(
@@ -87,17 +87,13 @@ class ReminderCog(commands.Cog):
         await self.bot.wait_until_ready()
 
 
-def is_half_hour_before_check_in(time: datetime) -> bool:
-    return time.weekday() == 2 and time.hour == 10 and time.minute == 30
-
-
 def is_check_in_time(time: datetime) -> bool:
-    return time.weekday() == 2 and time.hour == 11 and time.minute == 0
+    return time.weekday() == 6 and time.hour == 18 and time.minute == 0
 
 
 def is_hour_before_hack_session(time: datetime) -> bool:
-    return time.weekday() == 5 and time.hour == 13 and time.minute == 0
+    return time.weekday() == 2 and time.hour == 18 and time.minute == 0
 
 
 def is_hack_session_time(time: datetime) -> bool:
-    return time.weekday() == 5 and time.hour == 14 and time.minute == 0
+    return time.weekday() == 2 and time.hour == 19 and time.minute == 0
