@@ -55,6 +55,8 @@ class ReminderCog(commands.Cog):
             await self.send_before_hack_session_message()
         elif is_hack_session_time(now):
             await self.send_hack_session_message()
+        elif is_post_hack_session_time(now):
+            await self.send_check_out_message()
 
     async def send_check_in_message(self):
         await self.CHECK_IN_CHANNEL.send(
@@ -79,10 +81,14 @@ class ReminderCog(commands.Cog):
 
     async def send_hack_session_message(self):
         await self.HACK_SESSION_CHANNEL.send(
-            f"{self.ACTIVE_DEVS} Week.ly Hack Session now!\n"
-            f"Please check-in at {self.CHECK_IN_CHANNEL.mention}."
+            f"{self.ACTIVE_DEVS} Week.ly Hack Session now!"
         )
-        await self.CHECK_IN_CHANNEL.send(self.HACK_SESSION_TEMPLATE)
+
+    async def send_post_hack_session_message(self):
+        await self.CHECK_IN_CHANNEL.send(
+            f"{self.ACTIVE_DEVS} {self.CHECK_OUT_TEMPLATE}"
+            ""
+        )
 
     @reminder.before_loop
     async def before_reminder(self):
@@ -99,3 +105,7 @@ def is_hour_before_hack_session(time: datetime) -> bool:
 
 def is_hack_session_time(time: datetime) -> bool:
     return time.weekday() == 2 and time.hour == 19 and time.minute == 0
+
+
+def is_post_hack_session_time(time: datetime) -> bool:
+    return time.weekday() == 2 and time.hour == 20 and time.minute == 0

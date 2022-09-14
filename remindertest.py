@@ -5,6 +5,7 @@ from reminder import (
     is_hour_before_hack_session,
     is_check_in_time,
     is_hack_session_time,
+    is_post_hack_session_time,
 )
 
 
@@ -51,3 +52,13 @@ def test_not_hack_session(wednesday: datetime):
     assert is_hack_session_time(wednesday + timedelta(minutes=1)) is False
     assert is_hack_session_time(wednesday - timedelta(minutes=1)) is False
     assert is_hack_session_time(wednesday - timedelta(minutes=60)) is False
+
+
+def test_post_hack_session(wednesday: datetime):
+    assert is_post_hack_session_time(wednesday + timedelta(hours=1)) is True
+
+
+def test_not_post_hack_session(wednesday: datetime):
+    assert is_post_hack_session_time(wednesday) is False
+    assert is_post_hack_session_time(wednesday + timedelta(minutes=59)) is False
+    assert is_post_hack_session_time(wednesday + timedelta(minutes=61)) is False
