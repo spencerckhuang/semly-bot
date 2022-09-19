@@ -84,10 +84,9 @@ class ReminderCog(commands.Cog):
             f"{self.ACTIVE_DEVS} Week.ly Hack Session now!"
         )
 
-    async def send_post_hack_session_message(self):
+    async def send_check_out_message(self):
         await self.CHECK_IN_CHANNEL.send(
             f"{self.ACTIVE_DEVS} {self.CHECK_OUT_TEMPLATE}"
-            ""
         )
 
     @reminder.before_loop
