@@ -49,14 +49,14 @@ class ReminderCog(commands.Cog):
     @tasks.loop(seconds=59)
     async def reminder(self):
         now = datetime.now(pytz.timezone("America/New_York"))
-        if is_check_in_time(now):
-            await self.send_check_in_message()
-        elif is_hour_before_hack_session(now):
-            await self.send_before_hack_session_message()
-        elif is_hack_session_time(now):
+        # if is_check_in_time(now):
+            # await self.send_check_in_message()
+        # elif is_hour_before_hack_session(now):
+            # await self.send_before_hack_session_message()
+        if is_hack_session_time(now):
             await self.send_hack_session_message()
-        elif is_post_hack_session_time(now):
-            await self.send_check_out_message()
+        # elif is_post_hack_session_time(now):
+            # await self.send_check_out_message()
 
     async def send_check_in_message(self):
         await self.CHECK_IN_CHANNEL.send(
@@ -81,7 +81,7 @@ class ReminderCog(commands.Cog):
 
     async def send_hack_session_message(self):
         await self.HACK_SESSION_CHANNEL.send(
-            f"{self.ACTIVE_DEVS} Week.ly Hack Session now!"
+            f"{self.ACTIVE_DEVS} Week.ly Hack Session reminder!"
         )
 
     async def send_post_hack_session_message(self):
