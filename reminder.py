@@ -4,7 +4,7 @@ import pytz
 
 
 class ReminderCog(commands.Cog):
-    ACTIVE = False
+    ACTIVE = True
     ACTIVE_DEVS = "<@&938959783510294619>"
 
     CHECK_IN_TEMPLATE = (
@@ -49,14 +49,14 @@ class ReminderCog(commands.Cog):
     @tasks.loop(seconds=59)
     async def reminder(self):
         now = datetime.now(pytz.timezone("America/New_York"))
-        # if is_check_in_time(now):
-            # await self.send_check_in_message()
-        # elif is_hour_before_hack_session(now):
-            # await self.send_before_hack_session_message()
+        if is_check_in_time(now):
+            await self.send_check_in_message()
+        elif is_hour_before_hack_session(now):
+            await self.send_before_hack_session_message()
         if is_hack_session_time(now):
             await self.send_hack_session_message()
-        # elif is_post_hack_session_time(now):
-            # await self.send_check_out_message()
+        elif is_post_hack_session_time(now):
+            await self.send_check_out_message()
 
     async def send_check_in_message(self):
         await self.CHECK_IN_CHANNEL.send(
@@ -95,16 +95,16 @@ class ReminderCog(commands.Cog):
 
 
 def is_check_in_time(time: datetime) -> bool:
-    return time.weekday() == 6 and time.hour == 18 and time.minute == 0
+    return time.weekday() == 5 and time.hour == 18 and time.minute == 0
 
 
 def is_hour_before_hack_session(time: datetime) -> bool:
-    return time.weekday() == 2 and time.hour == 18 and time.minute == 0
+    return time.weekday() == 1 and time.hour == 19 and time.minute == 0
 
 
 def is_hack_session_time(time: datetime) -> bool:
-    return time.weekday() == 2 and time.hour == 19 and time.minute == 0
+    return time.weekday() == 1 and time.hour == 20 and time.minute == 0
 
 
 def is_post_hack_session_time(time: datetime) -> bool:
-    return time.weekday() == 2 and time.hour == 20 and time.minute == 0
+    return time.weekday() == 1 and time.hour == 21 and time.minute == 0
