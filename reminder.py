@@ -4,7 +4,6 @@ import pytz
 
 
 class ReminderCog(commands.Cog):
-    ACTIVE = True
     ACTIVE_DEVS = "<@&938959783510294619>"
     AUTHORIZED_USERS = [716199395913105428, 229732075203330049]
 
@@ -43,11 +42,13 @@ class ReminderCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot = bot
         self.disabled_this_week = False
-        if self.ACTIVE:
-            self.reminder.start()
+        self.active = True
+        self.reminder.start()
 
     @tasks.loop(seconds=59)
     async def reminder(self):
+        if not self.active:
+            return
         now = datetime.now(pytz.timezone("America/New_York"))
         if self.disabled_this_week:
             if is_post_hack_session_time(now):
@@ -102,6 +103,16 @@ class ReminderCog(commands.Cog):
     @reminder.before_loop
     async def before_reminder(self):
         await self.bot.wait_until_ready()
+
+    @commands.command()
+    async def activate(self, ctx: commands.Context):
+        self.active = True
+        await ctx.send("Activated reminders.")
+
+    @commands.command()
+    async def deactivate(self, ctx: commands.Context):
+        self.active = False
+        await ctx.send("Deactivated reminders.")
 
     @commands.command()
     async def disable_this_week(self, ctx: commands.Context):
