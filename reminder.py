@@ -4,13 +4,11 @@ from datetime import datetime
 import pytz
 
 
-def require_authorization(func):
-    async def wrapper(self, ctx, *args, **kwargs):
-        if ctx.author.id in ReminderCog.AUTHORIZED_USERS:
-            await func(self, ctx, *args, **kwargs)
-        else:
-            await ctx.send("You are not authorized to use this command.")
-    return wrapper
+async def execute_if_authorized(func, ctx: Context):
+    if ctx.author.id in ReminderCog.AUTHORIZED_USERS:
+        await func()
+    else:
+        await ctx.send("You are not authorized to use this command.")
 
 
 class ReminderCog(Cog):
@@ -119,21 +117,21 @@ class ReminderCog(Cog):
         async def main():
             self.active = True
             await ctx.send("Activated reminders.")
-        require_authorization(main)
+        await execute_if_authorized(main, ctx)
 
     @command()
     async def deactivate(self, ctx: Context):
         async def main():
             self.active = False
             await ctx.send("Deactivated reminders.")
-        require_authorization(main)
+        await execute_if_authorized(main, ctx)
 
     @command()
     async def disable_this_week(self, ctx: Context):
         async def main():
             self.disabled_this_week = True
             await ctx.send("Disabled this week's reminders.")
-        require_authorization(main)
+        await execute_if_authorized(main, ctx)
 
 
 def is_check_in_time(time: datetime) -> bool:
