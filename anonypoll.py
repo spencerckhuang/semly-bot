@@ -35,8 +35,8 @@ class AnonyPollCog(Cog):
 
     def __init__(self, bot: Bot):
         """
-        polls: Poll -> Responses
-        responses: Response -> Report
+        polls: Poll Message -> Response Messages
+        responses: Response Message -> Report
         """
         self.bot = bot
         self.polls: dict[Message, list[Message]] = defaultdict(list)
