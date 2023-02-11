@@ -6,6 +6,7 @@ import pytz
 class ReminderCog(commands.Cog):
     ACTIVE = True
     ACTIVE_DEVS = "<@&938959783510294619>"
+    AUTHORIZED_USERS = [716199395913105428, 229732075203330049]
 
     CHECK_IN_TEMPLATE = (
         "Please check-in with the following template:\n"
@@ -43,17 +44,22 @@ class ReminderCog(commands.Cog):
 
     def __init__(self, bot: commands.Bot):
         self.bot: commands.Bot = bot
+        self.disabled_this_week = False
         if self.ACTIVE:
             self.reminder.start()
 
     @tasks.loop(seconds=59)
     async def reminder(self):
         now = datetime.now(pytz.timezone("America/New_York"))
+        if self.disabled_this_week:
+            if is_post_hack_session_time(now):
+                self.disabled_this_week = False
+            return
         if is_check_in_time(now):
             await self.send_check_in_message()
         elif is_hour_before_hack_session(now):
             await self.send_before_hack_session_message()
-        if is_hack_session_time(now):
+        elif is_hack_session_time(now):
             await self.send_hack_session_message()
         elif is_post_hack_session_time(now):
             await self.send_check_out_message()
@@ -92,6 +98,14 @@ class ReminderCog(commands.Cog):
     @reminder.before_loop
     async def before_reminder(self):
         await self.bot.wait_until_ready()
+
+    @commands.command()
+    async def disable_this_week(self, ctx: commands.Context):
+        if ctx.author.id in self.AUTHORIZED_USERS:
+            self.disabled_this_week = True
+            await ctx.send("Disabled this week's reminders.")
+        else:
+            await ctx.send("You don't have permission to do that.")
 
 
 def is_check_in_time(time: datetime) -> bool:
