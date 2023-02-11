@@ -10,7 +10,6 @@ def require_authorization(func):
             await func(self, ctx, *args, **kwargs)
         else:
             await ctx.send("You are not authorized to use this command.")
-
     return wrapper
 
 
@@ -116,22 +115,25 @@ class ReminderCog(Cog):
         await self.bot.wait_until_ready()
 
     @command()
-    @require_authorization
     async def activate(self, ctx: Context):
-        self.active = True
-        await ctx.send("Activated reminders.")
+        async def main():
+            self.active = True
+            await ctx.send("Activated reminders.")
+        require_authorization(main)
 
     @command()
-    @require_authorization
     async def deactivate(self, ctx: Context):
-        self.active = False
-        await ctx.send("Deactivated reminders.")
+        async def main():
+            self.active = False
+            await ctx.send("Deactivated reminders.")
+        require_authorization(main)
 
     @command()
-    @require_authorization
     async def disable_this_week(self, ctx: Context):
-        self.disabled_this_week = True
-        await ctx.send("Disabled this week's reminders.")
+        async def main():
+            self.disabled_this_week = True
+            await ctx.send("Disabled this week's reminders.")
+        require_authorization(main)
 
 
 def is_check_in_time(time: datetime) -> bool:
