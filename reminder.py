@@ -117,6 +117,7 @@ class ReminderCog(Cog):
         async def main():
             self.active = True
             await ctx.send("Activated reminders.")
+
         await execute_if_authorized(main, ctx)
 
     @command()
@@ -124,6 +125,20 @@ class ReminderCog(Cog):
         async def main():
             self.active = False
             await ctx.send("Deactivated reminders.")
+
+        await execute_if_authorized(main, ctx)
+
+    @command()
+    async def enable_this_week(self, ctx: Context):
+        async def main():
+            self.disabled_this_week = False
+            await ctx.send("Enabled this week's reminders.")
+            if not self.active:
+                await ctx.send(
+                    "Reminders are currently deactivated. "
+                    "Please activate reminders if you want to receive reminders this week."
+                )
+
         await execute_if_authorized(main, ctx)
 
     @command()
@@ -131,6 +146,7 @@ class ReminderCog(Cog):
         async def main():
             self.disabled_this_week = True
             await ctx.send("Disabled this week's reminders.")
+
         await execute_if_authorized(main, ctx)
 
 
