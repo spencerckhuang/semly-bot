@@ -115,20 +115,20 @@ class ReminderCog(Cog):
     async def before_reminder(self):
         await self.bot.wait_until_ready()
 
-    @require_authorization
     @command()
+    @require_authorization
     async def activate(self, ctx: Context):
         self.active = True
         await ctx.send("Activated reminders.")
 
-    @require_authorization
     @command()
+    @require_authorization
     async def deactivate(self, ctx: Context):
         self.active = False
         await ctx.send("Deactivated reminders.")
 
-    @require_authorization
     @command()
+    @require_authorization
     async def disable_this_week(self, ctx: Context):
         self.disabled_this_week = True
         await ctx.send("Disabled this week's reminders.")
