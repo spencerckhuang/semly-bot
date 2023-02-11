@@ -9,7 +9,6 @@ class ReminderCog(commands.Cog):
     AUTHORIZED_USERS = [716199395913105428, 229732075203330049]
 
     CHECK_IN_TEMPLATE = (
-        "Please check-in with the following template:\n"
         "```\n"
         "**What I've done so far:** \n"
         "**What I still have to finish:** \n"
@@ -18,7 +17,6 @@ class ReminderCog(commands.Cog):
     )
 
     CHECK_OUT_TEMPLATE = (
-        "Please check-out with the following template:\n"
         "```\n"
         "**What I'll do by the next meeting:** \n"
         "**What I foresee may slow my progress:** \n"
@@ -66,6 +64,9 @@ class ReminderCog(commands.Cog):
 
     async def send_check_in_message(self):
         await self.CHECK_IN_CHANNEL.send(
+            "Please check-in with the following template:\n"
+        )
+        await self.CHECK_IN_CHANNEL.send(
             f"{self.ACTIVE_DEVS} Week.ly Check-in now!\n{self.CHECK_IN_TEMPLATE}"
         )
 
@@ -91,6 +92,9 @@ class ReminderCog(commands.Cog):
         )
 
     async def send_check_out_message(self):
+        await self.CHECK_IN_CHANNEL.send(
+            "Please check-out with the following template:\n"
+        )
         await self.CHECK_IN_CHANNEL.send(
             f"{self.ACTIVE_DEVS} {self.CHECK_OUT_TEMPLATE}"
         )
