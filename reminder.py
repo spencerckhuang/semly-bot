@@ -3,6 +3,16 @@ from datetime import datetime
 import pytz
 
 
+def require_authorization(func):
+    async def wrapper(self, ctx, *args, **kwargs):
+        if ctx.author.id in ReminderCog.AUTHORIZED_USERS:
+            await func(self, ctx, *args, **kwargs)
+        else:
+            await ctx.send("You are not authorized to use this command.")
+
+    return wrapper
+
+
 class ReminderCog(commands.Cog):
     ACTIVE_DEVS = "<@&938959783510294619>"
     AUTHORIZED_USERS = [716199395913105428, 229732075203330049]
@@ -104,23 +114,23 @@ class ReminderCog(commands.Cog):
     async def before_reminder(self):
         await self.bot.wait_until_ready()
 
+    @require_authorization
     @commands.command()
     async def activate(self, ctx: commands.Context):
         self.active = True
         await ctx.send("Activated reminders.")
 
+    @require_authorization
     @commands.command()
     async def deactivate(self, ctx: commands.Context):
         self.active = False
         await ctx.send("Deactivated reminders.")
 
+    @require_authorization
     @commands.command()
     async def disable_this_week(self, ctx: commands.Context):
-        if ctx.author.id in self.AUTHORIZED_USERS:
-            self.disabled_this_week = True
-            await ctx.send("Disabled this week's reminders.")
-        else:
-            await ctx.send("You don't have permission to do that.")
+        self.disabled_this_week = True
+        await ctx.send("Disabled this week's reminders.")
 
 
 def is_check_in_time(time: datetime) -> bool:
