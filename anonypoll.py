@@ -105,3 +105,17 @@ class AnonyPollCog(Cog):
         report = self.responses[reaction.message]
         report.decrement(reaction.emoji)
         await report.update_report()
+
+    @Cog.listener()
+    async def on_message_edit(self, before: Message, after: Message):
+        if before in self.polls:
+            for response in self.polls[before]:
+                await response.edit(content=after.content)
+
+    @Cog.listener()
+    async def on_message_delete(self, message: Message):
+        if message in self.polls:
+            for response in self.polls[message]:
+                await response.delete()
+                del self.responses[response]
+            del self.polls[message]
