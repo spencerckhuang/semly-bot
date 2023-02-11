@@ -1,5 +1,5 @@
 from nextcord.ext import tasks
-from nextcord.ext.commands import Cog, Context, command
+from nextcord.ext.commands import Bot, Cog, Context, command
 from datetime import datetime
 import pytz
 
