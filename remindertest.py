@@ -16,7 +16,7 @@ def timezone():
 
 @pytest.fixture
 def tuesday(timezone):
-    return datetime(2023, 1, 24, 20, 0, 0, tzinfo=timezone)
+    return datetime(2023, 1, 24, 19, 0, 0, tzinfo=timezone)
 
 
 @pytest.fixture

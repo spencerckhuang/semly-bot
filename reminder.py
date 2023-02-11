@@ -1,6 +1,6 @@
 from nextcord.ext import tasks
 from nextcord.ext.commands import Bot, Cog, Context, command
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 
 
@@ -13,7 +13,7 @@ async def execute_if_authorized(func, ctx: Context):
 
 class ReminderCog(Cog):
     ACTIVE_DEVS = "<@&938959783510294619>"
-    AUTHORIZED_USERS = [716199395913105428, 229732075203330049]
+    AUTHORIZED_USERS = [716199395913105428, 229732075203330049, 581294190328152084]
 
     CHECK_IN_TEMPLATE = (
         "```\n"
@@ -51,6 +51,7 @@ class ReminderCog(Cog):
         self.bot: Bot = bot
         self.disabled_this_week = False
         self.active = True
+        self.time_shift = timedelta(hours=0)
         self.reminder.start()
 
     @tasks.loop(seconds=59)
@@ -58,10 +59,15 @@ class ReminderCog(Cog):
         if not self.active:
             return
         now = datetime.now(pytz.timezone("America/New_York"))
+        now += self.time_shift
+
         if self.disabled_this_week:
             if is_post_hack_session_time(now):
                 self.disabled_this_week = False
+                if self.time_shift != timedelta(hours=0):
+                    await self.reset_time_shift()
             return
+
         if is_check_in_time(now):
             await self.send_check_in_message()
         elif is_hour_before_hack_session(now):
@@ -70,6 +76,8 @@ class ReminderCog(Cog):
             await self.send_hack_session_message()
         elif is_post_hack_session_time(now):
             await self.send_check_out_message()
+            if self.time_shift != timedelta(hours=0):
+                await self.reset_time_shift()
 
     async def send_check_in_message(self):
         await self.CHECK_IN_CHANNEL.send(
@@ -107,6 +115,10 @@ class ReminderCog(Cog):
         await self.CHECK_IN_CHANNEL.send(
             f"{self.ACTIVE_DEVS} {self.CHECK_OUT_TEMPLATE}"
         )
+
+    async def reset_time_shift(self):
+        self.time_shift = timedelta(hours=0)
+        await self.CHECK_IN_CHANNEL.send("Time shift has been reset.")
 
     @reminder.before_loop
     async def before_reminder(self):
@@ -149,18 +161,26 @@ class ReminderCog(Cog):
 
         await execute_if_authorized(main, ctx)
 
+    @command()
+    async def set_time_shift(self, ctx: Context, hours: int):
+        async def main():
+            self.time_shift = timedelta(hours=hours)
+            await ctx.send(f"Set time shift to {hours} hours.")
+
+        await execute_if_authorized(main, ctx)
+
 
 def is_check_in_time(time: datetime) -> bool:
     return time.weekday() == 5 and time.hour == 18 and time.minute == 0
 
 
 def is_hour_before_hack_session(time: datetime) -> bool:
-    return time.weekday() == 1 and time.hour == 19 and time.minute == 0
+    return time.weekday() == 1 and time.hour == 18 and time.minute == 0
 
 
 def is_hack_session_time(time: datetime) -> bool:
-    return time.weekday() == 1 and time.hour == 20 and time.minute == 0
+    return time.weekday() == 1 and time.hour == 19 and time.minute == 0
 
 
 def is_post_hack_session_time(time: datetime) -> bool:
-    return time.weekday() == 1 and time.hour == 21 and time.minute == 0
+    return time.weekday() == 1 and time.hour == 20 and time.minute == 0
