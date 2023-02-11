@@ -1,4 +1,5 @@
-from nextcord.ext import commands, tasks
+from nextcord.ext import tasks
+from nextcord.ext.commands import Cog, Context, command
 from datetime import datetime
 import pytz
 
@@ -13,7 +14,7 @@ def require_authorization(func):
     return wrapper
 
 
-class ReminderCog(commands.Cog):
+class ReminderCog(Cog):
     ACTIVE_DEVS = "<@&938959783510294619>"
     AUTHORIZED_USERS = [716199395913105428, 229732075203330049]
 
@@ -49,8 +50,8 @@ class ReminderCog(commands.Cog):
     def TEST_CHANNEL(self):
         return self.bot.get_channel(939658799059451904)
 
-    def __init__(self, bot: commands.Bot):
-        self.bot: commands.Bot = bot
+    def __init__(self, bot: Bot):
+        self.bot: Bot = bot
         self.disabled_this_week = False
         self.active = True
         self.reminder.start()
@@ -115,20 +116,20 @@ class ReminderCog(commands.Cog):
         await self.bot.wait_until_ready()
 
     @require_authorization
-    @commands.command()
-    async def activate(self, ctx: commands.Context):
+    @command()
+    async def activate(self, ctx: Context):
         self.active = True
         await ctx.send("Activated reminders.")
 
     @require_authorization
-    @commands.command()
-    async def deactivate(self, ctx: commands.Context):
+    @command()
+    async def deactivate(self, ctx: Context):
         self.active = False
         await ctx.send("Deactivated reminders.")
 
     @require_authorization
-    @commands.command()
-    async def disable_this_week(self, ctx: commands.Context):
+    @command()
+    async def disable_this_week(self, ctx: Context):
         self.disabled_this_week = True
         await ctx.send("Disabled this week's reminders.")
 
