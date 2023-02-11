@@ -44,6 +44,8 @@ class AnonyPollCog(Cog):
 
     @command()
     async def poll(self, ctx: Context, *, poll: str):
+        if ctx.author.id != self.RECEIVER:
+            return await ctx.send("You aren't allowed to use this command.")
         results = await ctx.send(f"Results for {poll}:")
         report = Report(results)
         for dev in self.get_active_devs():
