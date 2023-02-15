@@ -110,11 +110,9 @@ class ReminderCog(Cog):
 
     async def send_check_out_message(self):
         await self.CHECK_IN_CHANNEL.send(
-            "Please check-out with the following template:\n"
+            f"{self.ACTIVE_DEVS} Please check-out with the following template:\n"
         )
-        await self.CHECK_IN_CHANNEL.send(
-            f"{self.ACTIVE_DEVS} {self.CHECK_OUT_TEMPLATE}"
-        )
+        await self.CHECK_IN_CHANNEL.send(self.CHECK_OUT_TEMPLATE)
 
     async def reset_time_shift(self):
         self.time_shift = timedelta(hours=0)
