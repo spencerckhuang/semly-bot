@@ -81,11 +81,10 @@ class ReminderCog(Cog):
 
     async def send_check_in_message(self):
         await self.CHECK_IN_CHANNEL.send(
+            "{self.ACTIVE_DEVS} Week.ly Check-in now!\n"
             "Please check-in with the following template:\n"
         )
-        await self.CHECK_IN_CHANNEL.send(
-            f"{self.ACTIVE_DEVS} Week.ly Check-in now!\n{self.CHECK_IN_TEMPLATE}"
-        )
+        await self.CHECK_IN_CHANNEL.send(self.CHECK_IN_TEMPLATE)
 
     async def send_before_hack_session_message(self):
         attendance_message = await self.HACK_SESSION_CHANNEL.send(
