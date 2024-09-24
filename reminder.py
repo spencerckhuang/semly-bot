@@ -95,28 +95,17 @@ class ReminderCog(Cog):
                 await self.reset_time_shift()
         elif (is_timesheet_reminder_time(now)):
             await self.send_timesheet_reminder()
-        elif (is_test_time(now)):
-            await self.send_before_hack_session_message()
+        # elif (is_test_time(now)):
+        #     await self.send_before_hack_session_message()
 
     async def send_test_alive_message(self):
         await self.TEST_CHANNEL.send('I AM ALIVE')
 
     async def send_test_message_to_team(self):
-        # print('in helper function')
-        # await self.TEST_CHANNEL.send('testing message in test channel')
-        # print('done sending')
         team_channel = self.TEAM_CHANNEL
         print('got check in channel')
         await team_channel.send('Testing message :)')
         print('done sending 2')
-
-
-    async def send_check_in_message(self):
-        await self.CHECK_IN_CHANNEL.send(
-            f"{self.ACTIVE_DEVS} Week.ly Check-in now!\n"
-            "Please check-in with the following template:\n"
-        )
-        await self.CHECK_IN_CHANNEL.send(self.CHECK_IN_TEMPLATE)
 
     async def send_before_hack_session_message(self):
         attendance_message = await self.TEAM_CHANNEL.send(
@@ -135,18 +124,18 @@ class ReminderCog(Cog):
         await modality_message.add_reaction("💻")
 
     async def send_hack_session_message(self):
-        await self.HACK_SESSION_CHANNEL.send(
+        await self.TEAM_CHANNEL.send(
             f"{self.ACTIVE_DEVS} Week.ly Hack Session reminder!"
         )
 
     async def send_check_out_message(self):
-        await self.CHECK_IN_CHANNEL.send(
+        await self.TEAM_CHANNEL.send(
             f"{self.ACTIVE_DEVS} Please check-out with the following template:\n"
         )
-        await self.CHECK_IN_CHANNEL.send(self.CHECK_OUT_TEMPLATE)
+        await self.TEAM_CHANNEL.send(self.CHECK_OUT_TEMPLATE)
 
     async def send_timesheet_reminder(self):
-        await self.TEST_CHANNEL.send(
+        await self.TEAM_CHANNEL.send(
             f'{self.ACTIVE_DEVS} 📅 TimesheetX reminder 💸 — fill out your timesheets before Mon. 10am! '
         )
 
@@ -216,13 +205,8 @@ class ReminderCog(Cog):
 # time.weekday(): Monday is 0, Sunday is 6
 # --> For Sun. 4pm meetings, weekday = 6
 
-def is_check_in_time(time: datetime) -> bool:
-    return time.weekday() == 5 and time.hour == 18 and time.minute == 0
-
-
 def is_hour_before_hack_session(time: datetime) -> bool:
     return time.weekday() == 6 and time.hour == 15 and time.minute == 0
-
 
 def is_hack_session_time(time: datetime) -> bool:
     return time.weekday() == 6 and time.hour == 16 and time.minute == 0
