@@ -104,6 +104,8 @@ class ReminderCog(Cog):
 
     async def send_test_message_to_team(self):
         print('in helper function')
+        await self.TEST_CHANNEL.send('testing message in test channel')
+        await self.CHECK_IN_CHANNEL.send('Testing message :)')
         await self.TEAM_CHANNEL.send('Testing message')
 
     async def send_check_in_message(self):
