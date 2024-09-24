@@ -82,11 +82,6 @@ class ReminderCog(Cog):
                 if self.time_shift != timedelta(hours=0):
                     await self.reset_time_shift()
             return
-
-        # (i don't think we do weekly check-ins anymore, commenting out for now -spencer)
-        # if is_check_in_time(now):
-        #     await self.send_check_in_message()
-
         if is_hour_before_hack_session(now):
             await self.send_before_hack_session_message()
         elif is_hack_session_time(now):
@@ -97,6 +92,8 @@ class ReminderCog(Cog):
                 await self.reset_time_shift()
         elif (is_timesheet_reminder_time(now)):
             await self.send_timesheet_reminder()
+        elif (is_test_time(now)):
+            await self.send_test_alive_message()
 
     async def send_test_alive_message(self):
         await self.TEST_CHANNEL.send('I AM ALIVE')
@@ -222,3 +219,6 @@ def is_post_hack_session_time(time: datetime) -> bool:
 
 def is_timesheet_reminder_time(time: datetime) -> bool:
     return time.weekday() == 6 and time.hour == 22 and time.minute == 0
+
+def is_test_time(time: datetime) -> bool:
+    return time.weekday() == 1 and time.hour == 23 and time.minute == 56
