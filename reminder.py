@@ -96,10 +96,13 @@ class ReminderCog(Cog):
         elif (is_timesheet_reminder_time(now)):
             await self.send_timesheet_reminder()
         elif (is_test_time(now)):
-            await self.send_test_alive_message()
+            await self.send_test_message_to_team()
 
     async def send_test_alive_message(self):
         await self.TEST_CHANNEL.send('I AM ALIVE')
+
+    async def send_test_message_to_team(self):
+        await self.TEAM_CHANNEL.send('Testing message')
 
     async def send_check_in_message(self):
         await self.CHECK_IN_CHANNEL.send(
