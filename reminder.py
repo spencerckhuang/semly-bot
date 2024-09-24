@@ -74,10 +74,10 @@ class ReminderCog(Cog):
         now = datetime.now(pytz.timezone("America/New_York"))
         now += self.time_shift
 
-        print(f'now: {now}')
-        print(f'weekday: {now.weekday()}')
-        print(f'hour: {now.hour}')
-        print(f'minute: {now.minute}')
+        # print(f'now: {now}')
+        # print(f'weekday: {now.weekday()}')
+        # print(f'hour: {now.hour}')
+        # print(f'minute: {now.minute}')
 
         if self.disabled_this_week:
             if is_post_hack_session_time(now):
@@ -96,7 +96,6 @@ class ReminderCog(Cog):
         elif (is_timesheet_reminder_time(now)):
             await self.send_timesheet_reminder()
         elif (is_test_time(now)):
-            print('testing time, executing message send')
             await self.send_before_hack_session_message()
 
     async def send_test_alive_message(self):
@@ -235,4 +234,4 @@ def is_timesheet_reminder_time(time: datetime) -> bool:
     return time.weekday() == 6 and time.hour == 22 and time.minute == 0
 
 def is_test_time(time: datetime) -> bool:
-    return time.weekday() == 1 and time.hour == 12 and time.minute == 44
+    return time.weekday() == 1 and time.hour == 13 and time.minute == 0
