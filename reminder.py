@@ -103,15 +103,14 @@ class ReminderCog(Cog):
         await self.TEST_CHANNEL.send('I AM ALIVE')
 
     async def send_test_message_to_team(self):
-        print('in helper function')
-        await self.TEST_CHANNEL.send('testing message in test channel')
-        print('done sending')
+        # print('in helper function')
+        # await self.TEST_CHANNEL.send('testing message in test channel')
+        # print('done sending')
         check_in_channel = self.CHECK_IN_CHANNEL
         print('got check in channel')
         await check_in_channel.send('Testing message :)')
         print('done sending 2')
-        await self.TEAM_CHANNEL.send('Testing message')
-        print('done sending 3')
+
 
     async def send_check_in_message(self):
         await self.CHECK_IN_CHANNEL.send(
@@ -236,4 +235,4 @@ def is_timesheet_reminder_time(time: datetime) -> bool:
     return time.weekday() == 6 and time.hour == 22 and time.minute == 0
 
 def is_test_time(time: datetime) -> bool:
-    return time.weekday() == 1 and time.hour == 12 and time.minute == 40
+    return time.weekday() == 1 and time.hour == 12 and time.minute == 41
