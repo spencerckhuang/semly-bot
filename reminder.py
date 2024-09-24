@@ -96,12 +96,14 @@ class ReminderCog(Cog):
         elif (is_timesheet_reminder_time(now)):
             await self.send_timesheet_reminder()
         elif (is_test_time(now)):
+            print('testing time, executing message send')
             await self.send_test_message_to_team()
 
     async def send_test_alive_message(self):
         await self.TEST_CHANNEL.send('I AM ALIVE')
 
     async def send_test_message_to_team(self):
+        print('in helper function')
         await self.TEAM_CHANNEL.send('Testing message')
 
     async def send_check_in_message(self):
@@ -227,4 +229,4 @@ def is_timesheet_reminder_time(time: datetime) -> bool:
     return time.weekday() == 6 and time.hour == 22 and time.minute == 0
 
 def is_test_time(time: datetime) -> bool:
-    return time.weekday() == 1 and time.hour == 0 and time.minute == 5
+    return time.weekday() == 1 and time.hour == 0 and time.minute == 8
