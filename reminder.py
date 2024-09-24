@@ -75,6 +75,9 @@ class ReminderCog(Cog):
         now += self.time_shift
 
         print(f'now: {now}')
+        print(f'weekday: {now.weekday()}')
+        print(f'hour: {now.hour}')
+        print(f'minute: {now.minute}')
 
         if self.disabled_this_week:
             if is_post_hack_session_time(now):
