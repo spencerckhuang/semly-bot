@@ -48,9 +48,9 @@ class ReminderCog(Cog):
     def CHECK_IN_CHANNEL(self):
         return self.HACK_SESSION_CHANNEL
 
-    @property
-    def HACK_SESSION_CHANNEL(self):
-        return self.bot.get_channel(942783396042645575)
+    # @property
+    # def HACK_SESSION_CHANNEL(self):
+    #     return self.bot.get_channel(942783396042645575)
 
     @property
     def TEST_CHANNEL(self): 
@@ -97,7 +97,7 @@ class ReminderCog(Cog):
             await self.send_timesheet_reminder()
         elif (is_test_time(now)):
             print('testing time, executing message send')
-            await self.send_test_message_to_team()
+            await self.send_before_hack_session_message()
 
     async def send_test_alive_message(self):
         await self.TEST_CHANNEL.send('I AM ALIVE')
@@ -106,9 +106,9 @@ class ReminderCog(Cog):
         # print('in helper function')
         # await self.TEST_CHANNEL.send('testing message in test channel')
         # print('done sending')
-        check_in_channel = self.CHECK_IN_CHANNEL
+        team_channel = self.TEAM_CHANNEL
         print('got check in channel')
-        await check_in_channel.send('Testing message :)')
+        await team_channel.send('Testing message :)')
         print('done sending 2')
 
 
@@ -120,7 +120,7 @@ class ReminderCog(Cog):
         await self.CHECK_IN_CHANNEL.send(self.CHECK_IN_TEMPLATE)
 
     async def send_before_hack_session_message(self):
-        attendance_message = await self.HACK_SESSION_CHANNEL.send(
+        attendance_message = await self.TEAM_CHANNEL.send(
             f"{self.ACTIVE_DEVS} Week.ly Hack Session in 1 hour! "
             "Please react with ✅ if you can make it, "
             "⌛ if you will be late, and ❌ if you can't make it."
@@ -128,7 +128,7 @@ class ReminderCog(Cog):
         await attendance_message.add_reaction("✅")
         await attendance_message.add_reaction("⏳")
         await attendance_message.add_reaction("❌")
-        modality_message = await self.HACK_SESSION_CHANNEL.send(
+        modality_message = await self.TEAM_CHANNEL.send(
             "Additionally, please react with 🧑 if you will be attending in-person "
             "and 💻 if you will be attending remotely."
         )
@@ -235,4 +235,4 @@ def is_timesheet_reminder_time(time: datetime) -> bool:
     return time.weekday() == 6 and time.hour == 22 and time.minute == 0
 
 def is_test_time(time: datetime) -> bool:
-    return time.weekday() == 1 and time.hour == 12 and time.minute == 41
+    return time.weekday() == 1 and time.hour == 12 and time.minute == 44
