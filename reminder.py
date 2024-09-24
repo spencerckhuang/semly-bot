@@ -74,6 +74,8 @@ class ReminderCog(Cog):
         now = datetime.now(pytz.timezone("America/New_York"))
         now += self.time_shift
 
+        print(f'now: {now}')
+
         if self.disabled_this_week:
             if is_post_hack_session_time(now):
                 self.disabled_this_week = False
