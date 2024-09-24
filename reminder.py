@@ -231,4 +231,4 @@ def is_timesheet_reminder_time(time: datetime) -> bool:
     return time.weekday() == 6 and time.hour == 22 and time.minute == 0
 
 def is_test_time(time: datetime) -> bool:
-    return time.weekday() == 1 and time.hour == 0 and time.minute == 17
+    return time.weekday() == 1 and time.hour == 12 and time.minute == 35
